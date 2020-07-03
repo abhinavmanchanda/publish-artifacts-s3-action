@@ -22,10 +22,16 @@ if [ -z "$AWS_REGION" ]; then
   AWS_REGION="us-east-1"
 fi
 
+if [ -z "$DIST_FILE" ]; then
+  echo "DIST_FILE is not set. Quitting."
+  exit 1
+fi
+
 # Override default AWS endpoint if user sets AWS_S3_ENDPOINT.
 if [ -n "$AWS_S3_ENDPOINT" ]; then
   ENDPOINT_APPEND="--endpoint-url $AWS_S3_ENDPOINT"
 fi
+
 
 # Create a dedicated profile for this action to avoid conflicts
 # with past/future actions.
@@ -37,9 +43,12 @@ ${AWS_REGION}
 text
 EOF
 
+BRANCH_NAME=$(echo $GITHUB_REF | cut -d'/' -f 3)
+REPO_NAME=$(echo $GITHUB_REPOSITORY | cut -d'/' -f 2)
+
 # Sync using our dedicated profile and suppress verbose messages.
 # All other flags are optional via the `args:` directive.
-sh -c "aws s3 sync ${SOURCE_DIR:-.} s3://${AWS_S3_BUCKET}/${DEST_DIR} \
+sh -c "aws s3 sync ${DIST_FILE_PATH} s3://${AWS_S3_BUCKET}/${REPO_NAME}/${BRANCH_NAME}/${GITHUB_RUN_NUMBER}.zip \
               --profile s3-sync-action \
               --no-progress \
               ${ENDPOINT_APPEND} $*"

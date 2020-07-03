@@ -22,8 +22,8 @@ if [ -z "$AWS_REGION" ]; then
   AWS_REGION="us-east-1"
 fi
 
-if [ -z "$DIST_FILE" ]; then
-  echo "DIST_FILE is not set. Quitting."
+if [ -z "$DIST_FILE_PATH" ]; then
+  echo "DIST_FILE_PATH is not set. Quitting."
   exit 1
 fi
 

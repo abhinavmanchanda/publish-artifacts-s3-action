@@ -48,7 +48,7 @@ REPO_NAME=$(echo $GITHUB_REPOSITORY | cut -d'/' -f 2)
 
 # Sync using our dedicated profile and suppress verbose messages.
 # All other flags are optional via the `args:` directive.
-sh -c "aws s3 sync ${DIST_FILE_PATH} s3://${AWS_S3_BUCKET}/${REPO_NAME}/${BRANCH_NAME}/${GITHUB_RUN_NUMBER}.zip \
+sh -c "aws s3 cp ${DIST_FILE_PATH} s3://${AWS_S3_BUCKET}/${REPO_NAME}/${BRANCH_NAME}/${GITHUB_RUN_NUMBER}.zip \
               --profile s3-sync-action \
               --no-progress \
               ${ENDPOINT_APPEND} $*"

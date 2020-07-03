@@ -17,6 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: upload-to-github
     steps:
+      - uses: actions/checkout@v2
       - name: Upload to S3 as artifact
         uses: ./
         with:
